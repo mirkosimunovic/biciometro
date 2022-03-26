@@ -76,6 +76,7 @@ app.validation_layout = html.Div([main_layout,
                                  ])
 
 app.layout = main_layout
+server = app.server
 
 #-------------------------------#
 @app.callback(
