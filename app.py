@@ -9,6 +9,8 @@ from app_functions import *
 from layouts import *
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.QUARTZ])
+server = app.server
+
 
 #################### components
 nav = dbc.Nav(
@@ -76,7 +78,6 @@ app.validation_layout = html.Div([main_layout,
                                  ])
 
 app.layout = main_layout
-server = app.server
 
 #-------------------------------#
 @app.callback(
