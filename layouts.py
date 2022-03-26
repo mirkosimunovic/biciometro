@@ -21,7 +21,7 @@ about_layout = html.Div([dbc.Col([
 contact_layout = html.Div([dbc.Col([
                         html.Br(),html.Br(),html.Br(),html.Br(),    
                         html.H1('Contacto',style={'textAlign':'center'}),
-                        html.P(['Puedes revisar el codigo en mi ',html.A(href='http://www.github.com/mirkosimunovic',children='Github.')],style={'textAlign':'center'}),
+                        html.P(['Puedes revisar el codigo en mi ',html.A(href='http://www.github.com/mirkosimunovic/biciometro',children='Github.')],style={'textAlign':'center'}),
                         html.Br(),
                         html.P(['Me puedes encontrar en ',html.A(href='http://www.linkedin.com/in/mirko-simunovic/',children='LinkedIn.')],style={'textAlign':'center'})
                         ],width={'offset':0})
