@@ -33,14 +33,15 @@ origin_names = dict(baquedano='Plaza Baquedano',
                    )
 
 
-all_df_times = {}
+# all_df_times = {}
 ######################## Load all Data ##################################
 def load_data(origin):
     
-    all_df_times[origin] = pd.read_csv('assets/'+origin+'_database.csv')
+    # all_df_times[origin] = pd.read_csv('assets/'+origin+'_database.csv')
+    return pd.read_csv('assets/'+origin+'_database.csv')
 
-for origin in origin_names:
-    load_data(origin)
+# for origin in origin_names:
+#     load_data(origin)
 ########################################################################
         
 # Open and Edit the GeoJson file #####################################
@@ -65,7 +66,7 @@ selection = []
 hover_keys = ['time_transit','time_bike','vel_perc']
 
 def make_base_map(map_type='both',origin='baquedano'):
-    df = all_df_times[origin].copy()
+    df = load_data(origin).copy()
     df['diff'] = df.time_transit-df.time_bike
     df['vel_perc'] =  df.apply(lambda x: np.round(x['vel_perc'],2),axis=1)
     fig = px.choropleth_mapbox(df, geojson=gridjson,locations='id',
@@ -80,7 +81,7 @@ def make_base_map(map_type='both',origin='baquedano'):
                                                          (1, "blue")] if map_type=='both' else px.colors.cyclical.HSV,
                                range_color=get_range_lims(df,map_type),
                                hover_name='end_address',
-                               hover_data={key:(True if key in hover_keys else False) for key in list(all_df_times[origin].columns)},
+                               hover_data={key:(True if key in hover_keys else False) for key in list(df.columns)},
                                labels={'vel_perc':'% Mas Rapido (o Lento)','%Gain':'% de Ganancia/Tardanza',
                                        'time_bike':'Bicicleta (hr)','time_transit':'Transp. Pub. (hr)',
                                        'diff':'Tiempo Ahorrado con Bicicleta (hr)'},
@@ -191,8 +192,9 @@ def get_symbol_transit(response_transit):
 
 def get_base_barplot(origin='baquedano',id_=60):
     
+    df = load_data(origin).copy()
     data_dict = {}
-    json_list = ast.literal_eval(all_df_times[origin].loc[all_df_times[origin]['id']==id_]['json_transit'].iloc[0])
+    json_list = ast.literal_eval(df.loc[df['id']==id_]['json_transit'].iloc[0])
     type_dict = {'BUS':'Bus','WALKING':'Caminar','SUBWAY':'Metro','TRAM':'Tram'}
     for json in json_list:
         if json['travel_mode']=='WALKING':
@@ -212,12 +214,11 @@ def get_base_barplot(origin='baquedano',id_=60):
     cols = ['Type','Bicicleta']+list(data_dict.keys())
     df_route = pd.DataFrame(columns=cols)
     df_route.loc[0,'Type'] = 'Bici'
-    df_all = all_df_times[origin]
-    df_route.loc[0,'Bicicleta'] = df_all.loc[df_all['id']==id_]['time_bike'].values[0]*60.
+    df_route.loc[0,'Bicicleta'] = df.loc[df['id']==id_]['time_bike'].values[0]*60.
     df_route.loc[1,'Type'] = 'T. Publico'    
     for key in data_dict:
         df_route.loc[1,key] = sum(data_dict[key])  
-    total_transit = df_all.loc[df_all['id']==id_]['time_transit'].values[0]*60.
+    total_transit = df.loc[df['id']==id_]['time_transit'].values[0]*60.
     df_route.loc[1,'Transbordo'] = total_transit-df_route.iloc[1,1:].sum(axis=0)
     df_route = df_route.fillna(0)
     df_route = df_route.round(2)
@@ -251,13 +252,14 @@ def get_fig(map_type,origin):
             fig.data[idx].visible=False
         
         #######################  Bike Route ########################
-        lat,lng = get_routes(all_df_times[origin].loc[all_df_times[origin]['id']==selection[-1]]['json_bike'].iloc[0])
+        df = load_data(origin).copy()
+        lat,lng = get_routes(df.loc[df['id']==selection[-1]]['json_bike'].iloc[0])
         new_trace('Ruta Bici','blue',lat,lng)     
         #######################  Metro Route ########################
-        lat,lng = get_routes(all_df_times[origin].loc[all_df_times[origin]['id']==selection[-1]]['json_transit'].iloc[0])
+        lat,lng = get_routes(df.loc[df['id']==selection[-1]]['json_transit'].iloc[0])
         new_trace('Ruta Transporte Publico','red',lat,lng)
-        lats,lngs = get_starts(all_df_times[origin].loc[all_df_times[origin]['id']==selection[-1]]['json_transit'].iloc[0])
-        add_symbol(lats,lngs,get_symbol_transit(all_df_times[origin].loc[all_df_times[origin]['id']==selection[-1]]['json_transit'].iloc[0]))        
+        lats,lngs = get_starts(df.loc[df['id']==selection[-1]]['json_transit'].iloc[0])
+        add_symbol(lats,lngs,get_symbol_transit(df.loc[df['id']==selection[-1]]['json_transit'].iloc[0]))        
         
         fig.update_layout(legend=dict(yanchor="top",y=0.99,xanchor="left",x=0.01))        
         
@@ -277,7 +279,7 @@ def get_infoplot(origin):
 
 def get_linefig(origin='baquedano',rolling=100):
     
-    df_ = all_df_times[origin].copy()
+    df_ = load_data(origin).copy()
     df = df_[['dist_meters','time_bike','time_transit']].sort_values('dist_meters').rolling(rolling).median()
     std = df_[['dist_meters','time_bike','time_transit']].sort_values('dist_meters').rolling(rolling).std()
     x,y = df.dist_meters/1000,df.time_transit
@@ -318,7 +320,7 @@ def get_linefig(origin='baquedano',rolling=100):
 
 def get_infotext(origin='baquedano'):
     
-    df = all_df_times[origin].copy()
+    df = load_data(origin).copy()
     if len(selection)>0:
         address_text = df['end_address'].loc[df['id']==selection[-1]].iloc[0]
         t_bike = df['time_bike'].loc[df['id']==selection[-1]].iloc[0]

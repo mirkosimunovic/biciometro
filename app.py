@@ -10,6 +10,7 @@ from layouts import *
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.QUARTZ])
 server = app.server
+app.title = 'BicioMetro'
 
 
 #################### components
