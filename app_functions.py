@@ -66,7 +66,7 @@ selection = []
 hover_keys = ['time_transit','time_bike','vel_perc']
 
 def make_base_map(map_type='both',origin='baquedano'):
-    df = load_data(origin).copy()
+    df = load_data(origin)
     df['diff'] = df.time_transit-df.time_bike
     df['vel_perc'] =  df.apply(lambda x: np.round(x['vel_perc'],2),axis=1)
     fig = px.choropleth_mapbox(df, geojson=gridjson,locations='id',
@@ -192,7 +192,7 @@ def get_symbol_transit(response_transit):
 
 def get_base_barplot(origin='baquedano',id_=60):
     
-    df = load_data(origin).copy()
+    df = load_data(origin)
     data_dict = {}
     json_list = ast.literal_eval(df.loc[df['id']==id_]['json_transit'].iloc[0])
     type_dict = {'BUS':'Bus','WALKING':'Caminar','SUBWAY':'Metro','TRAM':'Tram'}
@@ -252,7 +252,7 @@ def get_fig(map_type,origin):
             fig.data[idx].visible=False
         
         #######################  Bike Route ########################
-        df = load_data(origin).copy()
+        df = load_data(origin)
         lat,lng = get_routes(df.loc[df['id']==selection[-1]]['json_bike'].iloc[0])
         new_trace('Ruta Bici','blue',lat,lng)     
         #######################  Metro Route ########################
@@ -279,7 +279,7 @@ def get_infoplot(origin):
 
 def get_linefig(origin='baquedano',rolling=100):
     
-    df_ = load_data(origin).copy()
+    df_ = load_data(origin)
     df = df_[['dist_meters','time_bike','time_transit']].sort_values('dist_meters').rolling(rolling).median()
     std = df_[['dist_meters','time_bike','time_transit']].sort_values('dist_meters').rolling(rolling).std()
     x,y = df.dist_meters/1000,df.time_transit
@@ -320,7 +320,7 @@ def get_linefig(origin='baquedano',rolling=100):
 
 def get_infotext(origin='baquedano'):
     
-    df = load_data(origin).copy()
+    df = load_data(origin)
     if len(selection)>0:
         address_text = df['end_address'].loc[df['id']==selection[-1]].iloc[0]
         t_bike = df['time_bike'].loc[df['id']==selection[-1]].iloc[0]
