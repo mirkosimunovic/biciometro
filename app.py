@@ -29,10 +29,10 @@ main_layout = html.Div([
                         nav,
                         dcc.Location(id='location'),
                         html.Div(id='main_content'),
-                        html.Footer([html.P(['© 2022 Bici o Metro - Creado por Mirko Simunovic',
+                        html.Footer([html.P(['© 2022 Bici o Metro - Creado por Mirko Simunovic - ' ,
                                      html.A(href='http://www.linkedin.com/in/mirko-simunovic/',children=[html.Img(src=app.get_asset_url('linkedin.png'), height="20px")]),
                                      html.A(href='http://www.github.com/mirkosimunovic',children=[html.Img(src=app.get_asset_url('github.png'), height="20px")]),
-                                            ])],style={'position':'absolute','bottom':0,'width':'100%','textAlign':'center'}
+                                            ])],style={'position':'relative','bottom':0,'width':'100%','textAlign':'center'}
                                     )             
                         ])
 
@@ -67,7 +67,8 @@ app_layout = html.Div(
                 ],lg={'size':3,'offset':1},md={'size':11,'offset':1},sm={'size':11,'offset':1}
                 ),  
         dbc.Col(
-                html.Div(dcc.Loading([dcc.Graph(id='choropleth')]))
+                [html.Div(dcc.Loading([dcc.Graph(id='choropleth')])),
+                html.Br()]
                 ,lg=4,md={'size':11,'offset':1},sm={'size':11,'offset':1}
                 ),              
         ],justify='center')
