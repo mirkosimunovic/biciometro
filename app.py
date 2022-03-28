@@ -62,14 +62,15 @@ app_layout = html.Div(
                 html.Br(),
                 dcc.Loading([html.Div(id='infotext')]),
                 html.Br(),
-                dbc.Col(html.Div(dcc.Loading([dcc.Graph(id='infoplot')])))
-                ],width={'size':3,'offset':1}
+                dbc.Col(html.Div(dcc.Loading([dcc.Graph(id='infoplot')]))),
+                html.Br()
+                ],md={'size':5,'offset':1},sm=12
                 ),  
         dbc.Col(
                 html.Div(dcc.Loading([dcc.Graph(id='choropleth')]))
-                ,width={'size':4}
+                ,md=6,sm=12
                 ),              
-        ])
+        ],justify='center')
     ])
 
 app.validation_layout = html.Div([main_layout,
