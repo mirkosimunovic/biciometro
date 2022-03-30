@@ -62,14 +62,14 @@ app_layout = html.Div(
                 html.Br(),
                 dcc.Loading([html.Div(id='infotext')]),
                 html.Br(),
-                dbc.Col(html.Div(dcc.Loading([dcc.Graph(id='infoplot')]))),
+                dcc.Loading([dcc.Graph(id='infoplot')]),
                 html.Br()
                 ],lg={'size':3,'offset':1},md={'size':11,'offset':1},sm={'size':11,'offset':1}
                 ),  
         dbc.Col(
                 [html.Div(dcc.Loading([dcc.Graph(id='choropleth')])),
                 html.Br()]
-                ,lg=4,md={'size':11,'offset':1},sm={'size':11,'offset':1}
+                ,lg=5,md={'size':11,'offset':1},sm={'size':11,'offset':1}
                 ),              
         ],justify='center')
     ])

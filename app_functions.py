@@ -89,7 +89,7 @@ def make_base_map(map_type='both',origin='baquedano'):
     fig.update_layout(margin={"r":10,"t":20,"l":20,"b":0})
     fig.update_layout(height=750,width=800)
     fig.update_layout(title={
-        'text': "Haz click y compara las rutas",
+        'text': "Haz click en el mapa y compara las rutas",
         'y':0.99,
         'x':0.01,
         'font':{'color':'blue','size':14},
