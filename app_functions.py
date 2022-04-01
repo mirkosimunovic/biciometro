@@ -38,7 +38,7 @@ origin_names = dict(baquedano='Plaza Baquedano',
 def load_data(origin):
     
     # all_df_times[origin] = pd.read_csv('assets/'+origin+'_database.csv')
-    return pd.read_csv('assets/'+origin+'_database.csv')
+    return pd.read_pickle('assets/'+origin+'_database.zip')
 
 # for origin in origin_names:
 #     load_data(origin)

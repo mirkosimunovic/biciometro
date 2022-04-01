@@ -1,4 +1,5 @@
 venv
+csv_files
 *.pyc
 .env
 .DS_Store
