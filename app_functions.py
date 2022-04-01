@@ -44,17 +44,6 @@ def load_data(origin):
 #     load_data(origin)
 ########################################################################
         
-# Open and Edit the GeoJson file #####################################
-with open("assets/largegrid3.json") as f:
-    gridjson = json.load(f)
-for i in range(len(gridjson['features'])):
-    gridjson['features'][i]['properties']['id']=i
-for i in range(len(gridjson['features'])):
-    matrix = np.array(gridjson['features'][i]['geometry']['coordinates'][0])
-    center = [np.mean(matrix[:4,1]),np.mean(matrix[:4,0])]
-    gridjson['features'][i]['properties']['center']=center
-###########################################################
-
 
 available_maps = dict(both='Bici y Transporte Publico',bike='Bicicleta',transit='Transporte Publico')
 color_column = dict(both='diff',bike='time_bike',transit='time_transit')
@@ -69,7 +58,7 @@ def make_base_map(map_type='both',origin='baquedano'):
     df = load_data(origin)
     df['diff'] = df.time_transit-df.time_bike
     df['vel_perc'] =  df.apply(lambda x: np.round(x['vel_perc'],2),axis=1)
-    fig = px.choropleth_mapbox(df, geojson=gridjson,locations='id',
+    fig = px.choropleth_mapbox(df, geojson="assets/largegrid3_new.json",locations='id',
                                color=color_column[map_type],
                                mapbox_style='basic',
                                zoom=10.3, 
