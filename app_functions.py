@@ -58,7 +58,7 @@ def make_base_map(map_type='both',origin='baquedano'):
     df = load_data(origin)
     df['diff'] = df.time_transit-df.time_bike
     df['vel_perc'] =  df.apply(lambda x: np.round(x['vel_perc'],2),axis=1)
-    fig = px.choropleth_mapbox(df, geojson="assets/geojson_short_list.json",locations='id',
+    fig = px.choropleth_mapbox(df, geojson="assets/largegrid3_new.json",locations='id',
                                color=color_column[map_type],
                                mapbox_style='basic',
                                zoom=10.3, 
