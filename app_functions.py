@@ -25,7 +25,7 @@ origin_names = dict(baquedano='Plaza Baquedano',
                     nunoa='Plaza Ñuñoa',
                    puentealto='Plaza Puente Alto',
                    cisterna='Metro La Cisterna',
-                    maipu='Plaza Maipu',
+                    maipu='Plaza Maipú',
                     sanpablo='Metro San Pablo',
                     loslibertadores='Metro Los Libertadores',
                     lovalledor='Metro Lo Valledor',
@@ -45,7 +45,7 @@ def load_data(origin):
 ########################################################################
         
 
-available_maps = dict(both='Bici y Transporte Publico',bike='Bicicleta',transit='Transporte Publico')
+available_maps = dict(both='Bicicleta y Transporte Público',bike='Bicicleta',transit='Transporte Público')
 color_column = dict(both='diff',bike='time_bike',transit='time_transit')
 suffix = dict(both=' hr',bike=' hr',transit=' hr')
 
@@ -75,11 +75,11 @@ def make_base_map(map_type='both',origin='baquedano'):
                                        'time_bike':'Bicicleta (hr)','time_transit':'Transp. Pub. (hr)',
                                        'diff':'Tiempo Ahorrado con Bicicleta (hr)'},
                               )
-    fig.update_layout(margin={"r":10,"t":20,"l":20,"b":0})
+    fig.update_layout(margin={"r":40,"t":40,"l":40,"b":40})
     fig.update_layout(height=750,width=800)
     fig.update_layout(title={
         'text': "Haz click en el mapa y compara las rutas",
-        'y':0.99,
+        'y':0.98,
         'x':0.01,
         'font':{'color':'blue','size':14},
         'xanchor': 'left',
@@ -202,9 +202,9 @@ def get_base_barplot(origin='baquedano',id_=60):
                 data_dict[key] = [json['duration']['value']/60.,]
     cols = ['Type','Bicicleta']+list(data_dict.keys())
     df_route = pd.DataFrame(columns=cols)
-    df_route.loc[0,'Type'] = 'Bici'
+    df_route.loc[0,'Type'] = 'Bicicleta'
     df_route.loc[0,'Bicicleta'] = df.loc[df['id']==id_]['time_bike'].values[0]*60.
-    df_route.loc[1,'Type'] = 'T. Publico'    
+    df_route.loc[1,'Type'] = 'T. Público'    
     for key in data_dict:
         df_route.loc[1,key] = sum(data_dict[key])  
     total_transit = df.loc[df['id']==id_]['time_transit'].values[0]*60.
@@ -243,10 +243,10 @@ def get_fig(map_type,origin):
         #######################  Bike Route ########################
         df = load_data(origin)
         lat,lng = get_routes(df.loc[df['id']==selection[-1]]['json_bike'].iloc[0])
-        new_trace('Ruta Bici','blue',lat,lng)     
+        new_trace('Ruta Bicicleta','blue',lat,lng)     
         #######################  Metro Route ########################
         lat,lng = get_routes(df.loc[df['id']==selection[-1]]['json_transit'].iloc[0])
-        new_trace('Ruta Transporte Publico','red',lat,lng)
+        new_trace('Ruta Transporte Público','red',lat,lng)
         lats,lngs = get_starts(df.loc[df['id']==selection[-1]]['json_transit'].iloc[0])
         add_symbol(lats,lngs,get_symbol_transit(df.loc[df['id']==selection[-1]]['json_transit'].iloc[0]))        
         
@@ -260,7 +260,7 @@ def get_infoplot(origin):
         fig = get_base_barplot(origin,selection[-1])
     else:
         fig = get_linefig(origin,rolling=200)
-    fig.update_layout(margin={"r":20,"l":20,"b":20,"t":20},
+    fig.update_layout(margin={"r":40,"l":80,"b":40,"t":40},
                       width=400,
                       height=250
                      )
@@ -276,7 +276,7 @@ def get_linefig(origin='baquedano',rolling=100):
     y2  = df.time_bike
     y2_up, y2_low = y2+std.time_bike, y2-std.time_bike
         
-    linefig = go.Figure([go.Scatter(x=x,y=y,mode='lines',hoverinfo="skip",name='T. Publico',line=dict(color='red')),
+    linefig = go.Figure([go.Scatter(x=x,y=y,mode='lines',hoverinfo="skip",name='T. Público',line=dict(color='red')),
                     go.Scatter(
                         x=list(x)+list(x[::-1]), # x, then x reversed
                         y=list(y_up)+list(y_low[::-1]), # upper, then lower reversed
@@ -319,8 +319,8 @@ def get_infotext(origin='baquedano'):
                                     html.P(['Desde: ',html.B(origin_names[origin]),html.Br(),
                                     'Hasta: ',html.B(address_text),html.Br(),
                                     dbc.Row([
-                                       dbc.Col(html.P(['Bici: ',html.B(html.H5(str(t_bike)+' hr'))])),
-                                       dbc.Col(html.P(['Trans. Publico: ',html.B(html.H5(str(t_transit)+' hr'))]))
+                                       dbc.Col(html.P(['Bicicleta: ',html.B(html.H5(str(t_bike)+' hr'))])),
+                                       dbc.Col(html.P(['Trans. Público: ',html.B(html.H5(str(t_transit)+' hr'))]))
                                             ])
                                             ],className='card-text')
                                     ])
@@ -331,7 +331,7 @@ def get_infotext(origin='baquedano'):
         return dbc.Card([
                         dbc.CardBody([
                             html.P(['Desde: ',html.B(origin_names[origin]),html.Br(),
-                                   'Ruta en Bici es Mas Rapida en el',html.Br(),
+                                   'Ruta en Bicicleta es Más Rápida en el',html.Br(),
                                     html.B(html.H4(str(perc)+'%')),' del Area Urbana'
                                    ])
                                     ],className='card-text')

@@ -45,7 +45,7 @@ app_layout = html.Div(
         dbc.Col([
 
                 html.Div([html.H1('Bici o Metro',style={'textAlign': 'left'}),
-                html.H3('Compara los tiempos de viaje entre Bicicleta y Transporte Publico en Santiago.',style={'textAlign':'left'}),
+                html.H3('Compara los tiempos de viaje entre Bicicleta y Transporte Público en Santiago.',style={'textAlign':'left'}),
                 dcc.Dropdown(
                         id='map_type',
                         options=[{'label': val, 'value': keys} for keys,val in available_maps.items()],
@@ -64,7 +64,7 @@ app_layout = html.Div(
                 html.Br(),
                 dcc.Loading([dcc.Graph(id='infoplot')]),
                 html.Br()
-                ],lg={'size':3,'offset':1},md={'size':11,'offset':1},sm={'size':11,'offset':1}
+                ],lg={'size':3,'offset':1},md={'size':10,'offset':1},sm={'size':10,'offset':1}
                 ),  
         dbc.Col(
                 [html.Div(dcc.Loading([dcc.Graph(id='choropleth')])),
